@@ -1,0 +1,23 @@
+{
+  "name": "enforce-branch-name",
+  "version": "1.0.0",
+  "description": "Little utility to be used in conjunction with Husky to enforce a branch naming convention",
+  "main": "index.js",
+  "repository": "https://github.com/tiaanduplessis/enforce-branch-name.git",
+  "author": "Tiaan du Plessis <tiaanduplessis@hotmail.com>",
+  "license": "MIT",
+  "bin": "index.js",
+  "scripts": {
+    "test": "yarn format && yarn lint",
+    "lint": "standard --fix",
+    "format": "prettier-standard './*.js'"
+  },
+  "devDependencies": {
+    "prettier-standard": "^9.1.1",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "current-git-branch": "^1.1.0",
+    "get-them-args": "^1.3.2"
+  }
+}
