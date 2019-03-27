@@ -4,7 +4,7 @@
 [![package downloads](https://img.shields.io/npm/dm/enforce-branch-name.svg?style=flat-square)](https://npmjs.org/package/enforce-branch-name)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![package license](https://img.shields.io/npm/l/enforce-branch-name.svg?style=flat-square)](https://npmjs.org/package/enforce-branch-name)
-[![make a pull request](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![make a pull request](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Greenkeeper badge](https://badges.greenkeeper.io/tiaanduplessis/enforce-branch-name.svg)](https://greenkeeper.io/)
 
 > Little utility to be used in conjunction with Husky to enforce a branch naming convention
 
