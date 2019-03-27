@@ -10,6 +10,7 @@ if (!args.unknown[0]) {
 
 if (args.ignore && new RegExp(args.ignore).test(branchName)) {
   console.warn(`Ignoring ${branchName} branch name check.`)
+  return
 }
 
 const pattern = new RegExp(args.unknown[0])

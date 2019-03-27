@@ -10,10 +10,12 @@
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [Contribute](#contribute)
-- [License](#License)
+- [enforce-branch-name](#enforce-branch-name)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Contribute](#contribute)
+  - [License](#license)
 
 ## Install
 
@@ -37,7 +39,7 @@ Now setup your hook:
 {
   "husky": {
     "hooks": {
-      "pre-push": "enforce-branch-name (hotfix|bugfix|feature)\/.+ --ignore staging",
+      "pre-push": "enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'",
     }
   }
 }
