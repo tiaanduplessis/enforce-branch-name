@@ -1,6 +1,6 @@
 {
   "name": "enforce-branch-name",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Little utility to enforce a branch naming convention",
   "main": "index.js",
   "repository": "https://github.com/tiaanduplessis/enforce-branch-name.git",
