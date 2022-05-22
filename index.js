@@ -1,23 +1,29 @@
-#!/usr/bin/env node
+const getBranchName = require('current-git-branch')()
 
-const branchName = require('current-git-branch')()
-const args = require('get-them-args')()
+module.exports = (args) => {
+  const branchName = getBranchName()
 
-if (!args.unknown[0]) {
-  console.error('No regex pattern provided')
-  process.exit(1)
-}
+  if (!branchName) {
+    console.error('Directory is not a git repository.')
+    process.exit(1)
+  }
 
-if (args.ignore && new RegExp(args.ignore).test(branchName)) {
-  console.warn(`Ignoring ${branchName} branch name check.`)
-  return
-}
+  if (!args.unknown[0]) {
+    console.error('No regex pattern provided')
+    process.exit(1)
+  }
 
-const pattern = new RegExp(args.unknown[0])
+  if (args.ignore && new RegExp(args.ignore).test(branchName)) {
+    console.warn(`Ignoring ${branchName} branch naming convention check.`)
+    return
+  }
 
-if (!pattern.test(branchName)) {
-  console.error(
-    `Current branch name ${branchName} does not match the enforced naming.`
-  )
-  process.exit(1)
+  const pattern = new RegExp(args.unknown[0])
+
+  if (!pattern.test(branchName)) {
+    console.error(
+      `Current branch name ${branchName} does not match the enforced naming convention.`
+    )
+    process.exit(1)
+  }
 }
