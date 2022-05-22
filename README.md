@@ -14,25 +14,39 @@
   - [Table of Contents](#table-of-contents)
   - [Install](#install)
   - [Usage](#usage)
-  - [Contribute](#contribute)
+    - [With husky](#with-husky)
+  - [Contributing](#contributing)
   - [License](#license)
 
 ## Install
 
-This project uses [node](https://nodejs.org) and [npm](https://www.npmjs.com). 
-
-
-First make sure [`husky`](https://github.com/typicode/husky) is installed. Then install `enforce-branch-name`:
-
+With `npm`:
 ```sh
-$ npm install --save-dev enforce-branch-name
-$ # OR
-$ yarn add --dev enforce-branch-name
+npm install --save-dev enforce-branch-name
 ```
+
+With `yarn`:
+```sh
+yarn add -D enforce-branch-name
+```
+
+With `pnpm`:
+```sh
+pnpm add -D enforce-branch-name
+```
+
 
 ## Usage
 
-Now setup your hook:
+Enforce that a branch starts with the prefix `hotfix/`, `bugfix/` or `/feature`. Ignore this check if on the `staging` branch:
+
+```sh
+enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'
+```
+
+### With husky
+
+First make sure [`husky`](https://github.com/typicode/husky) is installed and configured. Then configure your hook pre-push hook:
 
 ```
 // package.json
@@ -45,14 +59,13 @@ Now setup your hook:
 }
 ```
 
-## Contribute
+## Contributing
 
-1. Fork it and create your feature branch: `git checkout -b my-new-feature`
-2. Commit your changes: `git commit -am "Add some feature"`
-3. Push to the branch: `git push origin my-new-feature`
-4. Submit a pull request
+Got an idea for a new feature? Found a bug? Contributions are welcome! Please [open up an issue](https://github.com/tiaanduplessis/feature-flip/issues) or [make a pull request](https://makeapullrequest.com/).
 
 ## License
 
-MIT
+[MIT © Tiaan du Plessis](./LICENSE)
+
+
     
