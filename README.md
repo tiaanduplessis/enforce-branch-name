@@ -61,7 +61,7 @@ First make sure [`husky`](https://github.com/typicode/husky) is installed and co
 
 ## Contributing
 
-Got an idea for a new feature? Found a bug? Contributions are welcome! Please [open up an issue](https://github.com/tiaanduplessis/feature-flip/issues) or [make a pull request](https://makeapullrequest.com/).
+Got an idea for a new feature? Found a bug? Contributions are welcome! Please [open up an issue](https://github.com/tiaanduplessis/enforce-branch-name/issues) or [make a pull request](https://makeapullrequest.com/).
 
 ## License
 
