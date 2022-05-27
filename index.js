@@ -1,4 +1,4 @@
-const getBranchName = require('current-git-branch')()
+const getBranchName = require('current-git-branch')
 
 module.exports = (args) => {
   const branchName = getBranchName()
