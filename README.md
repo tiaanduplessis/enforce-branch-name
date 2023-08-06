@@ -46,17 +46,13 @@ enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'
 
 ### With husky
 
-First make sure [`husky`](https://github.com/typicode/husky) is installed and configured. Then configure your hook pre-push hook:
+First make sure [`husky`](https://github.com/typicode/husky) is installed and configured. Then configure your hook pre-commit hook:
+```bash
+# .husky/pre-commit
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-```
-// package.json
-{
-  "husky": {
-    "hooks": {
-      "pre-push": "enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'",
-    }
-  }
-}
+npx lint-staged
 ```
 
 ## Contributing
