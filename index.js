@@ -1,7 +1,7 @@
 const getBranchName = require('current-git-branch')
 
 module.exports = (args) => {
-  const branchName = getBranchName()
+  const branchName = getBranchName({branchOptions: ["--no-color"]})
 
   if (!branchName) {
     console.error('Directory is not a git repository.')
