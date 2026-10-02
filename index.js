@@ -1,7 +1,21 @@
-const getBranchName = require('current-git-branch')
+const { execFileSync } = require('child_process')
+
+function getBranchName () {
+  try {
+    const output = execFileSync('git', ['branch', '--no-color'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+      maxBuffer: 10 * 1000 * 1000
+    })
+    const currentBranch = output.split(/\r?\n/).find(line => line.startsWith('* '))
+    return currentBranch ? currentBranch.slice(2) : false
+  } catch (error) {
+    return false
+  }
+}
 
 module.exports = (args) => {
-  const branchName = getBranchName({ branchOptions: ['--no-color'] })
+  const branchName = getBranchName()
 
   if (!branchName) {
     console.error('Directory is not a git repository.')

@@ -13,7 +13,7 @@ function fixture (runTest) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'enforce-branch-name-'))
 
   try {
-    const repo = path.join(root, 'repo')
+    let repo = path.join(root, 'repo')
     const outside = path.join(root, 'outside')
     const templates = path.join(root, 'templates')
     const hooks = path.join(root, 'hooks')
@@ -37,8 +37,13 @@ function fixture (runTest) {
       GIT_PAGER: 'cat'
     })
 
-    function run (command, args, cwd = repo) {
-      const result = spawnSync(command, args, { cwd, env, encoding: 'utf8' })
+    function run (command, args, cwd = repo, overrides = {}) {
+      const result = spawnSync(command, args, {
+        cwd,
+        env: { ...env, ...overrides },
+        encoding: 'utf8',
+        timeout: 10000
+      })
       if (result.error) throw result.error
       assert.strictEqual(result.signal, null, `${command} terminated: ${result.signal}`)
       return result
@@ -50,8 +55,20 @@ function fixture (runTest) {
       return result.stdout
     }
 
-    function invoke (args, cwd = repo) {
-      return run(process.execPath, [cli, ...args], cwd)
+    function invoke (args, cwd = repo, overrides = {}) {
+      return run(process.execPath, [cli, ...args], cwd, overrides)
+    }
+
+    function relocate (name) {
+      const destination = path.join(root, name)
+      fs.renameSync(repo, destination)
+      repo = destination
+      return repo
+    }
+
+    function withoutGit (args) {
+      const pathKey = Object.keys(env).find(key => key.toLowerCase() === 'path') || 'PATH'
+      return invoke(args, repo, { [pathKey]: outside })
     }
 
     git('init', '--quiet', '--template', templates)
@@ -64,7 +81,7 @@ function fixture (runTest) {
     git('config', 'color.branch.current', 'green')
     git('commit', '--quiet', '--allow-empty', '-m', 'Test fixture')
 
-    runTest({ git, invoke, outside })
+    runTest({ git, invoke, outside, relocate, root, withoutGit })
   } finally {
     fs.rmSync(root, { recursive: true, force: true })
   }
@@ -133,6 +150,45 @@ test('reports a missing regex pattern', ({ invoke }) => {
 
 test('reports a directory outside a Git repository', ({ invoke, outside }) => {
   failure(invoke([pattern], outside), 'Directory is not a git repository.')
+})
+
+test('accepts a repository path containing spaces and an ampersand', ({ invoke, relocate }) => {
+  relocate('repo with spaces & punctuation')
+  success(invoke([pattern]))
+})
+
+if (process.platform !== 'win32') {
+  test('does not execute shell syntax in a repository path', ({ invoke, relocate }) => {
+    const repo = relocate('repo $(touch SHELL_EXECUTED)')
+    const result = invoke([pattern])
+    assert.strictEqual(fs.existsSync(path.join(repo, 'SHELL_EXECUTED')), false)
+    success(result)
+  })
+}
+
+test('preserves the branch text reported by Git in detached HEAD state', ({ git, invoke }) => {
+  git('checkout', '--quiet', '--detach', 'HEAD')
+  forceColor(git)
+  const selected = git('branch', '--no-color').split(/\r?\n/).find(line => line.startsWith('* '))
+  assert(selected, 'Git must report a selected detached HEAD')
+  const name = selected.slice(2)
+  assert(name.startsWith('('), 'Fixture must report detached HEAD text')
+  const exactPattern = '^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$'
+  success(invoke([exactPattern]))
+  failure(invoke([pattern]), `Current branch name ${name} does not match the enforced naming convention.`)
+})
+
+test('accepts the selected branch of a linked Git worktree', ({ git, invoke, root }) => {
+  const worktree = path.join(root, 'linked worktree & punctuation')
+  git('worktree', 'add', '--quiet', '-b', 'feature/linked_branch', worktree)
+  forceColor(git)
+  const exactPattern = '^feature/linked_branch$'
+  success(invoke([exactPattern], worktree))
+  failure(invoke(['^feature/my_feature$'], worktree), 'Current branch name feature/linked_branch does not match the enforced naming convention.')
+})
+
+test('reports an unavailable Git executable without a stack trace', ({ withoutGit }) => {
+  failure(withoutGit([pattern]), 'Directory is not a git repository.')
 })
 
 console.log(`${passed} tests passed`)
