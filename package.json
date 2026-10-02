@@ -8,7 +8,8 @@
   "license": "MIT",
   "bin": "cli.js",
   "scripts": {
-    "lint": "standard --fix"
+    "test": "node test/test.js",
+    "lint": "standard"
   },
   "devDependencies": {
     "standard": "^17.0.0"
