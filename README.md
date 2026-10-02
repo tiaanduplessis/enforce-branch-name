@@ -63,9 +63,8 @@ First make sure [`husky`](https://github.com/typicode/husky) is installed and co
 
 Got an idea for a new feature? Found a bug? Contributions are welcome! Please [open up an issue](https://github.com/tiaanduplessis/enforce-branch-name/issues) or [make a pull request](https://makeapullrequest.com/).
 
+After installing dependencies, run `npm test` and `npm run lint` before submitting changes. Tests require Git and create temporary repositories with isolated configuration to check the CLI, including when Git colors branch names.
+
 ## License
 
 [MIT © Tiaan du Plessis](./LICENSE)
-
-
-    
