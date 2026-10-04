@@ -38,26 +38,29 @@ pnpm add -D enforce-branch-name
 
 ## Usage
 
-Enforce that a branch starts with the prefix `hotfix/`, `bugfix/` or `/feature`. Ignore this check if on the `staging` branch:
+Enforce that a branch starts with the prefix `hotfix/`, `bugfix/` or `feature/`. Ignore this check if on the `staging` branch:
 
 ```sh
-enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'
+enforce-branch-name "(hotfix|bugfix|feature)\/.+" --ignore "staging"
 ```
+
+Use double quotes around the complete regex. Windows `cmd.exe` does not treat single quotes as quoting, so an unprotected `|` is interpreted as a pipe between commands.
 
 ### With husky
 
-First make sure [`husky`](https://github.com/typicode/husky) is installed and configured. Then configure your hook pre-push hook:
+First make sure [`husky`](https://github.com/typicode/husky) is installed and configured. For versions configured through `package.json`, add the pre-push hook:
 
-```
-// package.json
+```json
 {
   "husky": {
     "hooks": {
-      "pre-push": "enforce-branch-name '(hotfix|bugfix|feature)\/.+' --ignore 'staging'",
+      "pre-push": "enforce-branch-name \"(hotfix|bugfix|feature)\\/.+\" --ignore \"staging\""
     }
   }
 }
 ```
+
+Inside a JSON string, escape double quotes as `\"` and regex backslashes as `\\`. For example, write `\\d` in JSON to pass `\d` to the regex.
 
 ## Contributing
 
